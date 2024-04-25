@@ -3,26 +3,21 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.system.FlxSound;
-import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.sound.FlxSound;
+import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
 	var posNC:String = "none";
 	var vent:FlxSprite = new FlxSprite(556, 42, AssetPaths.vent__png);
 	var camButton:FlxSprite = new FlxSprite(484, 636, AssetPaths.camUp__png);
-	var lockTest:FlxSprite = new FlxSprite(0, 0);
 	var fullTime:FlxText = new FlxText(0, 0, FlxG.width, "12:AM");
 	var powerFE:FlxText = new FlxText(0, 30, FlxG.width, null, 32);
 	var timerBE:Int = 41000;
-	var randomJiz:Int;
-	var fade:FlxSprite = new FlxSprite(0, 0, AssetPaths.fade__png);
-	var powerCAM:Bool;
 
 	// Sound/Music
 	var camSound:FlxSound;
-	var gameEnd:FlxSound;
 	var lightOFsound:FlxSound;
 	var showerSound:FlxSound;
 	var bonnieMoveSound:FlxSound;
@@ -58,7 +53,6 @@ class PlayState extends FlxState
 	var doorRight2:FlxSprite = new FlxSprite(523, 154, AssetPaths.rightDoor2__png);
 
 	// Camera stuff
-	var wichCamLocked:String = "none";
 	var camBg:FlxSprite = new FlxSprite(-21, -4, AssetPaths.camBG__png);
 	var ventConnections:FlxSprite = new FlxSprite(317, 104, AssetPaths.ventConnections__png);
 	var you:FlxSprite = new FlxSprite(559, 455, AssetPaths.you__png);
@@ -123,23 +117,34 @@ class PlayState extends FlxState
 
 	var timeTarger:Int = 2;
 
+	//Update v1.1 new video function code
+	var freddyVid:FlxVideo;
+	var foxyVid:FlxVideo;
+	var bonnieVid:FlxVideo;
+	var cupcakeVid:FlxVideo;
+
 	override public function create()
 	{
 		super.create();
+
+		freddyVid = new FlxVideo({source: AssetPaths.frdJumpscare__mp4, autoplay: false});
+		foxyVid = new FlxVideo({source: AssetPaths.foxyJumpscare__mp4, autoplay: false});
+		bonnieVid = new FlxVideo({source: AssetPaths.bonnieJumpscare__mp4, autoplay: false});
+		cupcakeVid = new FlxVideo({source: AssetPaths.cupcakeJumpscare__mp4, autoplay: false});
 
 		// Cursor
 		cursor = new FlxSprite(cursorX, cursorY);
 		cursor.makeGraphic(1, 1, FlxColor.BLACK);
 		cursor.origin.x = cursor.width / 2;
 		cursor.origin.y = cursor.height / 2;
-		lockTest.makeGraphic(32, 32, FlxColor.GREEN);
-		FlxG.mouse.useSystemCursor = true;
+
 		findCupcake.x = 325;
 		findCupcake.y = 554;
 
+		FlxG.mouse.useSystemCursor = true;
+
 		// Sound/Music
 		camSound = FlxG.sound.load(AssetPaths.cameraOpen__ogg);
-		gameEnd = FlxG.sound.load(AssetPaths.gameEnd__ogg);
 		lightOFsound = FlxG.sound.load(AssetPaths.lightOFsnd__ogg);
 		showerSound = FlxG.sound.load(AssetPaths.showerSFX__ogg);
 		bonnieMoveSound = FlxG.sound.load(AssetPaths.bonnieMove__ogg);
@@ -254,7 +259,6 @@ class PlayState extends FlxState
 			removeShower();
 			removeRight();
 			removeCam();
-			powerCAM = false;
 			waterOF = false;
 			if (cursor.overlaps(lightSwitchSPRTOP) && FlxG.mouse.justPressed)
 			{
@@ -450,14 +454,13 @@ class PlayState extends FlxState
 		remove(cam2b);
 		remove(cam1c);
 		remove(cam2c);
-		remove(lockTest);
 		remove(findCupcake);
 	}
 
 	// AI stuff
 	function cupcakeAI()
 	{
-		if (posNC == "cam")
+		if (posNC == "cam" || posNC == "shower")
 		{
 			// nothing bro
 		}
@@ -550,7 +553,11 @@ class PlayState extends FlxState
 				attackCUPCAKE = Random.int(1, 900);
 				if (attackCUPCAKE == 299)
 				{
-					FlxG.switchState(new CupcakeScare());
+					#if sys
+					FlxG.switchState(new EndState());
+					#else
+					cupcakeVid.play();
+					#end
 				}
 			}
 		}
@@ -576,12 +583,16 @@ class PlayState extends FlxState
 			}
 			if (lighOF == false && posNC == "checkDoor")
 			{
-				FlxG.switchState(new FreddyScare());
+				//playFreddy
 			}
 
 			if (posNC == "shower" || posNC == "cam" && frdState == "there" && reliefTimer == 0)
 			{
-				FlxG.switchState(new FreddyScare());
+				#if sys
+				FlxG.switchState(new EndState());
+				#else
+				freddyVid.play();
+				#end
 			}
 
 			getRidof = 0;
@@ -659,7 +670,11 @@ class PlayState extends FlxState
 			attack = Random.int(1, 1000);
 			if (attack == 350)
 			{
-				FlxG.switchState(new FoxyScare());
+				#if sys
+				FlxG.switchState(new EndState());
+				#else
+				foxyVid.play();
+				#end
 			}
 		}
 	}
@@ -684,7 +699,11 @@ class PlayState extends FlxState
 				switch attackBONNIE
 				{
 					case 560:
-						FlxG.switchState(new BonnieScare());
+						#if sys
+						FlxG.switchState(new EndState());
+						#else
+						bonnieVid.play();
+						#end
 				}
 			}
 		}

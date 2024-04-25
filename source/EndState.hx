@@ -18,12 +18,15 @@ class EndState extends FlxState
 	override public function create()
 	{
 		super.create();
+
+		//cursor
 		cursor = new FlxSprite(cursorX, cursorY);
 		cursor.origin.x = cursor.width / 2;
 		cursor.origin.y = cursor.height / 2;
 		cursor.makeGraphic(1, 1, FlxColor.BLACK);
 		cursor.alpha = 1;
 		FlxG.mouse.useSystemCursor = true;
+
 		add(endImage);
 		add(retryButton);
 		add(cursor);
@@ -38,7 +41,7 @@ class EndState extends FlxState
 			FlxG.camera.fade(FlxColor.BLACK, 4, true, onComplete, false);
 		}
 
-		if (FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(retryButton) && FlxG.mouse.justPressed)
 		{
 			FlxG.switchState(new MainMenu());
 		}

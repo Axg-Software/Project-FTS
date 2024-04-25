@@ -10,7 +10,6 @@ class TransitionState extends FlxState
 	var night1:FlxSprite = new FlxSprite(0, 0, AssetPaths.night1__png);
 	var timer:Float = 0;
 	var color:FlxColor;
-	var direction(default, null):Bool;
 
 	override function create()
 	{
