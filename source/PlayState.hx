@@ -123,6 +123,9 @@ class PlayState extends FlxState
 	var bonnieVid:FlxVideo;
 	var cupcakeVid:FlxVideo;
 
+	//"Jumpscare" on desktop
+	var whoScaredU:Int = 0;
+
 	override public function create()
 	{
 		super.create();
@@ -414,8 +417,10 @@ class PlayState extends FlxState
 		remove(cursor);
 		add(cursor);
 		remove(cupcake);
+		//420 hehe
 		remove(foxy);
 		remove(bonbon);
+		showerCurPOS = "closed";
 	}
 
 	function removeRight()
@@ -425,6 +430,8 @@ class PlayState extends FlxState
 		remove(doorRight2);
 		remove(cursor);
 		add(cursor);
+		remove(frdy1);
+		remove(frdy2);
 	}
 
 	function addCam()
@@ -460,9 +467,13 @@ class PlayState extends FlxState
 	// AI stuff
 	function cupcakeAI()
 	{
-		if (posNC == "cam" || posNC == "shower")
+		if (posNC == "cam")
 		{
 			// nothing bro
+		}
+		else if (posNC == "shower" && cupcakePOS == "leftBathroom")
+		{
+			// nothing bro 2!!!!
 		}
 		else
 		{
@@ -554,7 +565,8 @@ class PlayState extends FlxState
 				if (attackCUPCAKE == 299)
 				{
 					#if sys
-					FlxG.switchState(new EndState());
+					whoScaredU = 1;
+					FlxG.switchState(new ScareState(whoScaredU));
 					#else
 					cupcakeVid.play();
 					#end
@@ -577,26 +589,32 @@ class PlayState extends FlxState
 
 		if (frdState == "there")
 		{
-			if (posNC == "shower" || posNC == "cam")
+			if (posNC == "shower" || posNC == "cam" || posNC == "none")
 			{
 				reliefTimer -= 1;
 			}
-			if (lighOF == false && posNC == "checkDoor")
-			{
-				//playFreddy
-			}
-
-			if (posNC == "shower" || posNC == "cam" && frdState == "there" && reliefTimer == 0)
+			if (lighOF == false && posNC == "checkDoor" && frdState == "there")
 			{
 				#if sys
-				FlxG.switchState(new EndState());
+				whoScaredU = 2;
+				FlxG.switchState(new ScareState(whoScaredU));
+				#else
+				freddyVid.play();
+				#end
+			}
+
+			if (posNC == "shower" || posNC == "cam" && frdState == "there" && reliefTimer <= 0)
+			{
+				#if sys
+				whoScaredU = 2;
+				FlxG.switchState(new ScareState(whoScaredU));
 				#else
 				freddyVid.play();
 				#end
 			}
 
 			getRidof = 0;
-			getRidof = Random.int(1, 450);
+			getRidof = Random.int(1, 650);
 			if (lighOF == false && getRidof == 450)
 			{
 				frdState = "not there";
@@ -636,7 +654,7 @@ class PlayState extends FlxState
 				foxy.y = 260;
 		}
 
-		if (posNC == "shower" && showerCurPOS == "closed")
+		if (posNC == "shower" && showerCurPOS == "open")
 		{
 			getRidofFOX1 = 0;
 			getRidofFOX1 = Random.int(1, 400);
@@ -649,7 +667,7 @@ class PlayState extends FlxState
 					foxyState = 1;
 			}
 		}
-		else
+		else if (showerCurPOS == "closed" && posNC == "cam" || posNC == "none" || posNC == "checkDoor")
 		{
 			foxyMO = 0;
 			foxyMO = Random.int(1, 600);
@@ -671,7 +689,8 @@ class PlayState extends FlxState
 			if (attack == 350)
 			{
 				#if sys
-				FlxG.switchState(new EndState());
+				whoScaredU = 3;
+				FlxG.switchState(new ScareState(whoScaredU));
 				#else
 				foxyVid.play();
 				#end
@@ -700,7 +719,8 @@ class PlayState extends FlxState
 				{
 					case 560:
 						#if sys
-						FlxG.switchState(new EndState());
+						whoScaredU = 4;
+						FlxG.switchState(new ScareState(whoScaredU));
 						#else
 						bonnieVid.play();
 						#end

@@ -4,6 +4,11 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
+import haxe.Timer;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class WinState extends FlxState
 {
@@ -19,6 +24,42 @@ class WinState extends FlxState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		#if sys
+		var dir = 'C:\\Users\\ehard\\OneDrive\\Desktop\\GameProjects2\\HaxeStuff\\HaxeFlixel\\Project-FTS-main\\assets\\data\\win.txt';
+		File.write(dir, false);
+
+		var options:haxe.ds.List<String> = new List<String>();
+		options.add("WonGame");
+
+		var output;
+
+		for (i in options)
+		{
+			output = File.append(dir, false);
+			output.writeString(i + "\n");
+			output.close();
+		}
+
+		if (FileSystem.exists(dir))
+		{
+			var fileContents = File.getContent(dir);
+
+			if (fileContents.indexOf("WonGame") != -1)
+			{
+				trace("The file contains 'Example'.");
+			}
+			else
+			{
+				trace("The file does not contain 'Example'.");
+			}
+		}
+		else
+		{
+			trace("File does not exist.");
+		}
+		#end
+
 		if (FlxG.keys.justPressed.R)
 		{
 			FlxG.switchState(new MainMenu());
@@ -35,5 +76,10 @@ class WinState extends FlxState
 	function onComplete2()
 	{
 		FlxG.switchState(new MainMenu());
+	}
+
+	function wait(milliseconds:Int, callback:Void->Void):Void
+	{
+		Timer.delay(callback, milliseconds);
 	}
 }

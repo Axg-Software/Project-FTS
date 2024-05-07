@@ -26,6 +26,8 @@ class CreditState extends FlxState
 	{
 		super.create();
 
+		FlxG.camera.fade(FlxColor.BLACK, 1, true, null, false);
+
 		//Cam sound
 		camSound = FlxG.sound.load(AssetPaths.cameraOpen__ogg);
 		
@@ -37,11 +39,6 @@ class CreditState extends FlxState
 		cursor.alpha = 1;
 		FlxG.mouse.useSystemCursor = true;
 
-		//Play bg music
-		if (FlxG.sound.music == null)
-		{
-			FlxG.sound.playMusic(AssetPaths.five_times_shitting__ogg);
-		}
 		//Flx Text shit
 		credits.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.CENTER);
 		backToMenu.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);

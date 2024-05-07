@@ -6,6 +6,10 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class MainMenu extends FlxState
 {
@@ -24,13 +28,17 @@ class MainMenu extends FlxState
 	var cursorY:Float = FlxG.mouse.y;
 	var camSound:FlxSound;
 
-	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.1", 32);
+	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.2", 32);
 
 	var musicSelect:Int = 0;
+
+	var starComplete:FlxSprite = new FlxSprite(1216, 656, AssetPaths.starComplete__png);
 
 	override public function create()
 	{
 		super.create();
+
+		FlxG.camera.fade(FlxColor.BLACK, 1, true, null, false);
 
 		camSound = FlxG.sound.load(AssetPaths.cameraOpen__ogg);
 
@@ -52,13 +60,8 @@ class MainMenu extends FlxState
 		add(creditsButton);
 		add(cursor);
 		add(versionNumber);
-		//add(optionsButton);
+		add(optionsButton);
 		add(title);
-
-		if (FlxG.sound.music == null)
-		{
-			FlxG.sound.playMusic(AssetPaths.five_times_shitting__ogg);
-		}
 	}
 
 	override public function update(elapsed:Float)
@@ -76,10 +79,70 @@ class MainMenu extends FlxState
 			camSound.play();
 			FlxG.switchState(new CreditState());
 		}
-		//else if (cursor.overlaps(optionsButton) && FlxG.mouse.justPressed)
-		//{
-		//	camSound.play();
-		//	FlxG.switchState(new OptionsState());
-		//}
+		else if (cursor.overlaps(optionsButton) && FlxG.mouse.justPressed)
+		{
+			camSound.play();
+			FlxG.switchState(new OptionsState());
+		}
+
+		//Options for music
+		#if sys
+		var dir = 'C:\\Users\\ehard\\OneDrive\\Desktop\\GameProjects2\\HaxeStuff\\HaxeFlixel\\Project-FTS-main\\assets\\data\\optionsData.txt';
+		if (FileSystem.exists(dir))
+		{
+			var fileContents = File.getContent(dir);
+	
+			if (fileContents.indexOf("Music 1") != -1)
+			{
+				if (FlxG.sound.music == null)
+				{
+					FlxG.sound.playMusic(AssetPaths.five_times_shitting__ogg);
+				}
+			}
+			else if (fileContents.indexOf("Music 2") != -1)
+			{
+				if (FlxG.sound.music == null)
+				{
+					FlxG.sound.playMusic(AssetPaths.five_times_shitting2__ogg);
+				}
+			}
+			else if (fileContents.indexOf("Static") != -1)
+			{
+				if (FlxG.sound.music == null)
+				{
+					FlxG.sound.playMusic(AssetPaths.bgNoise__ogg);
+				}
+			}
+			else
+			{
+				trace("SETTINGS NOT APPLIED YET");
+			}
+		}
+		else
+		{
+			trace("File does not exist.");
+		}
+
+		//Makes the star appear in the bottom right when you leave the game
+		var dir2 = 'C:\\Users\\ehard\\OneDrive\\Desktop\\GameProjects2\\HaxeStuff\\HaxeFlixel\\Project-FTS-main\\assets\\data\\win.txt';
+		if (FileSystem.exists(dir))
+		{
+			var fileContents = File.getContent(dir);
+	
+			if (fileContents.indexOf("WonGame") != -1)
+			{
+				addStar();
+			}
+		}
+		else
+		{
+			trace("File does not exist.");
+		}
+		#end
+	}
+
+	function addStar() 
+	{
+		add(starComplete);
 	}
 }
