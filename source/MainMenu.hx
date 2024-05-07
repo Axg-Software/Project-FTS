@@ -87,7 +87,7 @@ class MainMenu extends FlxState
 
 		//Options for music
 		#if sys
-		var dir = 'C:\\Users\\ehard\\OneDrive\\Desktop\\GameProjects2\\HaxeStuff\\HaxeFlixel\\Project-FTS-main\\assets\\data\\optionsData.txt';
+		var dir = 'assets\\data\\optionsData.txt';
 		if (FileSystem.exists(dir))
 		{
 			var fileContents = File.getContent(dir);
@@ -124,10 +124,10 @@ class MainMenu extends FlxState
 		}
 
 		//Makes the star appear in the bottom right when you leave the game
-		var dir2 = 'C:\\Users\\ehard\\OneDrive\\Desktop\\GameProjects2\\HaxeStuff\\HaxeFlixel\\Project-FTS-main\\assets\\data\\win.txt';
-		if (FileSystem.exists(dir))
+		var dir2 = 'assets\\data\\win.txt';
+		if (FileSystem.exists(dir2))
 		{
-			var fileContents = File.getContent(dir);
+			var fileContents = File.getContent(dir2);
 	
 			if (fileContents.indexOf("WonGame") != -1)
 			{

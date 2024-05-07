@@ -26,7 +26,7 @@ class WinState extends FlxState
 		super.update(elapsed);
 
 		#if sys
-		var dir = 'C:\\Users\\ehard\\OneDrive\\Desktop\\GameProjects2\\HaxeStuff\\HaxeFlixel\\Project-FTS-main\\assets\\data\\win.txt';
+		var dir = 'assets\\data\\win.txt';
 		File.write(dir, false);
 
 		var options:haxe.ds.List<String> = new List<String>();
