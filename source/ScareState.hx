@@ -1,4 +1,4 @@
-//Since idk how to play video on desktop I will just use a PNG with noise in the back to simulate a jumpscare.
+//Lmao not using hxCodec anymore
 package;
 
 import flixel.FlxG;
@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import haxe.Timer;
 import flixel.sound.FlxSound;
+
 
 class ScareState extends FlxState
 {
@@ -40,22 +41,16 @@ class ScareState extends FlxState
     {
         super.update(elapsed);
 
-        //(change to a switch statement l8r)
-        if (whosScared == 1)
+        switch whosScared
         {
-            add(scarePNG1);
-        }
-        else if (whosScared == 2)
-        {
-            add(scarePNG2);
-        }
-        else if (whosScared == 3)
-        {
-            add(scarePNG3);
-        }
-        else if (whosScared == 4)
-        {
-            add(scarePNG4);
+            case 1:
+                add(scarePNG1);
+            case 2:
+                add(scarePNG2);
+            case 3:
+                add(scarePNG3);
+            case 4:
+                add(scarePNG4);      
         }
 
         wait(4000, goToEndState);

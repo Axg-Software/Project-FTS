@@ -1,11 +1,18 @@
 package;
 
+import video.FlxVideo;
+import pixel.PixelSubState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import flixel.sound.FlxSound;
 import flixel.text.FlxText;
+import haxe.Timer;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class PlayState extends FlxState
 {
@@ -15,6 +22,7 @@ class PlayState extends FlxState
 	var fullTime:FlxText = new FlxText(0, 0, FlxG.width, "12:AM");
 	var powerFE:FlxText = new FlxText(0, 30, FlxG.width, null, 32);
 	var timerBE:Int = 41000;
+	var notePaper:FlxSprite = new FlxSprite(10, 646, AssetPaths.paperNOTEEE__png);
 
 	// Sound/Music
 	var camSound:FlxSound;
@@ -36,11 +44,6 @@ class PlayState extends FlxState
 	var lightSwitchSPRTOP:FlxSprite = new FlxSprite(577, 186, AssetPaths.lightUP__png);
 	var lighSwitchSPRDOWN:FlxSprite = new FlxSprite(577, 275, AssetPaths.lightDOWN__png);
 
-	// Cursor
-	var cursorX:Float = FlxG.mouse.x;
-	var cursorY:Float = FlxG.mouse.y;
-	var cursor:FlxSprite = new FlxSprite();
-
 	// click to:
 	var clickToShower:FlxSprite = new FlxSprite(-20, -22, AssetPaths.officeLeft__png);
 	var clickToDoor:FlxSprite = new FlxSprite(844, 4, AssetPaths.officeRight__png);
@@ -58,6 +61,8 @@ class PlayState extends FlxState
 	var you:FlxSprite = new FlxSprite(559, 455, AssetPaths.you__png);
 	var otherRooms:FlxSprite = new FlxSprite(237, 453, AssetPaths.otherRooms__png);
 	var findCupcake:FlxSprite = new FlxSprite(0, 0, AssetPaths.locate__png);
+	var resetCupcakeLocation:FlxText = new FlxText(10, 320, FlxG.width, "Reset Cupcake location");
+	var resetFreddyLocation:FlxText = new FlxText(10, 350, FlxG.width, "Reset Freddy location");
 
 	var cam1a:FlxSprite = new FlxSprite(623, 371, AssetPaths.cam1a__png);
 	var cam2a:FlxSprite = new FlxSprite(520, 371, AssetPaths.cam2a__png);
@@ -70,7 +75,7 @@ class PlayState extends FlxState
 	var frdy1:FlxSprite = new FlxSprite(543, 396, AssetPaths.freddynorm__png);
 	var frdy2:FlxSprite = new FlxSprite(0, 0, AssetPaths.freddy__png);
 	var bonbon:FlxSprite = new FlxSprite(782, 355, AssetPaths.bonnie__png);
-	var foxy:FlxSprite = new FlxSprite(0, 0, AssetPaths.foxy__png);
+	var foxy:FlxSprite = new FlxSprite(656, 482, AssetPaths.foxy__png);
 	var cupcake:FlxSprite = new FlxSprite(42, 550, AssetPaths.cupcake__png);
 
 	// cupcake AI vars
@@ -126,20 +131,24 @@ class PlayState extends FlxState
 	//"Jumpscare" on desktop
 	var whoScaredU:Int = 0;
 
+	//useagh
+	var usage:Int = 0;
+	var usagetxt:FlxText = new FlxText(0, 60, FlxG.width, null, 29);
+
+	//Phone guy shii
+	var phoneGuyEasterEgg:FlxSound;
+	var phoneGuyRegular:FlxSound;
+	var phoneGuyChance:Int;
+	var phoneGuyBugRepeatFix:Bool = false;
+
 	override public function create()
 	{
 		super.create();
 
-		freddyVid = new FlxVideo({source: AssetPaths.frdJumpscare__mp4, autoplay: false});
-		foxyVid = new FlxVideo({source: AssetPaths.foxyJumpscare__mp4, autoplay: false});
-		bonnieVid = new FlxVideo({source: AssetPaths.bonnieJumpscare__mp4, autoplay: false});
-		cupcakeVid = new FlxVideo({source: AssetPaths.cupcakeJumpscare__mp4, autoplay: false});
-
-		// Cursor
-		cursor = new FlxSprite(cursorX, cursorY);
-		cursor.makeGraphic(1, 1, FlxColor.BLACK);
-		cursor.origin.x = cursor.width / 2;
-		cursor.origin.y = cursor.height / 2;
+		freddyVid = new video.FlxVideo({source: AssetPaths.frdJumpscare__mp4, autoplay: false});
+		foxyVid = new video.FlxVideo({source: AssetPaths.foxyJumpscare__mp4, autoplay: false});
+		bonnieVid = new video.FlxVideo({source: AssetPaths.bonnieJumpscare__mp4, autoplay: false});
+		cupcakeVid = new video.FlxVideo({source: AssetPaths.cupcakeJumpscare__mp4, autoplay: false});
 
 		findCupcake.x = 325;
 		findCupcake.y = 554;
@@ -152,11 +161,16 @@ class PlayState extends FlxState
 		showerSound = FlxG.sound.load(AssetPaths.showerSFX__ogg);
 		bonnieMoveSound = FlxG.sound.load(AssetPaths.bonnieMove__ogg);
 		freddyKnockSound = FlxG.sound.load(AssetPaths.knocking__ogg);
+		phoneGuyEasterEgg = FlxG.sound.load(AssetPaths.fortniteAccent__ogg);
+		phoneGuyRegular = FlxG.sound.load(AssetPaths.fortniteAccent__ogg);
+		FlxG.sound.playMusic(AssetPaths.bgNoise__ogg, 1, true);
 
+		//Text formatting
 		fullTime.setFormat(AssetPaths.digital_7__ttf, 29, FlxColor.WHITE, FlxTextAlign.LEFT);
 		powerFE.setFormat(AssetPaths.digital_7__ttf, 29, FlxColor.WHITE, FlxTextAlign.LEFT);
-
-		FlxG.sound.playMusic(AssetPaths.bgNoise__ogg, 1, true);
+		resetCupcakeLocation.setFormat(AssetPaths.digital_7__ttf, 29, FlxColor.WHITE, FlxTextAlign.LEFT);
+		usagetxt.setFormat(AssetPaths.digital_7__ttf, 29, FlxColor.WHITE, FlxTextAlign.LEFT);
+		resetFreddyLocation.setFormat(AssetPaths.digital_7__ttf, 29, FlxColor.WHITE, FlxTextAlign.LEFT);
 	}
 
 	override public function update(elapsed:Float)
@@ -165,20 +179,21 @@ class PlayState extends FlxState
 
 		timerBE -= 1;
 
-		cursor.x = FlxG.mouse.x - cursor.width / 2;
-		cursor.y = FlxG.mouse.y - cursor.height / 2;
+		if (timerBE <= 36000)
+		{
+			cupcakeAI();
+			freddyAI();
+			foxyAI();
+			bonnieAI();
+		}
 
-		cupcakeAI();
-		freddyAI();
-		foxyAI();
-		bonnieAI();
-
-		if (regPower == 0)
+		if (regPower <= 0)
 		{
 			FlxG.switchState(new EndState());
 		}
 
 		powerFE.text = "Power: " + Std.string(regPower);
+		usagetxt.text = "Usage: " + Std.string(usage);
 
 		if (waterOF == true)
 		{
@@ -186,20 +201,29 @@ class PlayState extends FlxState
 			showerSound.play();
 		}
 
+		if (lighOF == true)
+		{
+			usage = 1;
+		}
+		else if(lighOF == true && posNC == "cam")
+		{
+			usage = 2;
+		}
+
 		// Go Places
-		if (cursor.overlaps(clickToShower) && posNC == "none" && FlxG.mouse.justPressed && lighOF == true)
+		if (FlxG.mouse.overlaps(clickToShower) && posNC == "none" && FlxG.mouse.justPressed && lighOF == true)
 		{
 			posNC = "shower";
 			removeNONE();
 			lightOFsound.play();
 		}
-		if (cursor.overlaps(clickToDoor) && posNC == "none" && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(clickToDoor) && posNC == "none" && FlxG.mouse.justPressed)
 		{
 			posNC = "checkDoor";
 			removeNONE();
 			lightOFsound.play();
 		}
-		if (cursor.overlaps(camButton) && posNC == "none" && lighOF == true)
+		if (FlxG.mouse.overlaps(camButton) && posNC == "none" && lighOF == true)
 		{
 			posNC = "cam";
 			removeNONE();
@@ -211,7 +235,7 @@ class PlayState extends FlxState
 		{
 			removeNONE();
 			addShower();
-			if (cursor.overlaps(clickToNONE) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(clickToNONE) && FlxG.mouse.justPressed)
 			{
 				posNC = "none";
 				camSound.play();
@@ -226,7 +250,6 @@ class PlayState extends FlxState
 			{
 				showerCurPOS = "closed";
 				lightOFsound.play();
-				regPower -= 1;
 			}
 
 			if (FlxG.keys.justPressed.C && showerCurPOS == "closed")
@@ -247,7 +270,7 @@ class PlayState extends FlxState
 			removeNONE();
 			add(clickToNONE);
 
-			if (cursor.overlaps(clickToNONE) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(clickToNONE) && FlxG.mouse.justPressed)
 			{
 				posNC = "none";
 				camSound.play();
@@ -263,16 +286,21 @@ class PlayState extends FlxState
 			removeRight();
 			removeCam();
 			waterOF = false;
-			if (cursor.overlaps(lightSwitchSPRTOP) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(lightSwitchSPRTOP) && FlxG.mouse.justPressed)
 			{
 				lighOF = true;
 				regPower -= 1;
 				camSound.play();
 			}
-			else if (cursor.overlaps(lighSwitchSPRDOWN) && FlxG.mouse.justPressed)
+			else if (FlxG.mouse.overlaps(lighSwitchSPRDOWN) && FlxG.mouse.justPressed)
 			{
 				lighOF = false;
 				camSound.play();
+			}
+
+			if (FlxG.mouse.overlaps(notePaper) && FlxG.mouse.justPressed)
+			{
+				switchSub2();
 			}
 		}
 
@@ -281,10 +309,33 @@ class PlayState extends FlxState
 			addCam();
 			add(clickToNONE);
 			removeNONE();
-			if (cursor.overlaps(clickToNONE) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(clickToNONE) && FlxG.mouse.justPressed)
 			{
 				posNC = "none";
 				camSound.play();
+			}
+
+			if (FlxG.mouse.overlaps(resetCupcakeLocation) && FlxG.mouse.justPressed)
+			{
+				cupcakePOS = "leftBathroom";
+				layer3 = false;
+				layer2 = false;
+				AHHHHHH = false;
+				AHHHHHH2 = false;
+				findCupcake.x = 325;
+				findCupcake.y = 554;
+				regPower = regPower - 10;
+			}
+
+			if (FlxG.mouse.overlaps(resetFreddyLocation) && FlxG.mouse.justPressed)
+			{
+				frdState = "not there";
+				regPower = regPower - 5;
+			}
+
+			if (FlxG.mouse.overlaps(findCupcake) && FlxG.mouse.justPressed)
+			{
+				switchSub();
 			}
 		}
 
@@ -323,6 +374,18 @@ class PlayState extends FlxState
 			FlxG.switchState(new WinState());
 		}
 		add(powerFE);
+		//add(usagetxt);
+
+		#if !deug
+		if (FlxG.keys.justPressed.ESCAPE)
+		{
+			FlxG.switchState(new EndState());
+		}
+		else if (FlxG.keys.justPressed.BACKSPACE)
+		{
+			freddyVid.play();
+		}
+		#end
 	}
 
 	// Random Functions
@@ -336,8 +399,18 @@ class PlayState extends FlxState
 		add(lighSwitchSPRDOWN);
 		add(vent);
 		add(camButton);
-		remove(cursor);
-		add(cursor);
+		#if sys
+		var dir1 = 'assets\\data\\optionData2.txt';
+		if (FileSystem.exists(dir1))
+		{
+			var fileContents = File.getContent(dir1);
+			
+			if (fileContents.indexOf("True") != -1)
+			{
+				addPaper();
+			}
+		}
+		#end
 	}
 
 	function removeNONE()
@@ -349,8 +422,7 @@ class PlayState extends FlxState
 		remove(middleOffice);
 		remove(vent);
 		remove(camButton);
-		remove(cursor);
-		add(cursor);
+		remove(notePaper);
 	}
 
 	function addRight()
@@ -364,8 +436,6 @@ class PlayState extends FlxState
 		{
 			add(doorRight1);
 		}
-		remove(cursor);
-		add(cursor);
 		if (lighOF == true && frdState == "there")
 		{
 			add(frdy1);
@@ -396,8 +466,6 @@ class PlayState extends FlxState
 		}
 
 		add(clickToNONE);
-		remove(cursor);
-		add(cursor);
 		if (cupcakePOS == "leftBathroom")
 		{
 			add(cupcake);
@@ -414,10 +482,7 @@ class PlayState extends FlxState
 		remove(showerCurtainClosed);
 		remove(showerCurtainOpen);
 		remove(clickToNONE);
-		remove(cursor);
-		add(cursor);
 		remove(cupcake);
-		//420 hehe
 		remove(foxy);
 		remove(bonbon);
 		showerCurPOS = "closed";
@@ -428,8 +493,6 @@ class PlayState extends FlxState
 		remove(wallRight);
 		remove(doorRight1);
 		remove(doorRight2);
-		remove(cursor);
-		add(cursor);
 		remove(frdy1);
 		remove(frdy2);
 	}
@@ -447,6 +510,8 @@ class PlayState extends FlxState
 		add(cam1c);
 		add(cam2c);
 		add(findCupcake);
+		add(resetCupcakeLocation);
+		add(resetFreddyLocation);
 	}
 
 	function removeCam()
@@ -462,18 +527,16 @@ class PlayState extends FlxState
 		remove(cam1c);
 		remove(cam2c);
 		remove(findCupcake);
+		remove(resetCupcakeLocation);
+		remove(resetFreddyLocation);
 	}
 
 	// AI stuff
 	function cupcakeAI()
 	{
-		if (posNC == "cam")
+		if (posNC == "cam" || posNC == "shower" && cupcakePOS == "leftBathroom")
 		{
 			// nothing bro
-		}
-		else if (posNC == "shower" && cupcakePOS == "leftBathroom")
-		{
-			// nothing bro 2!!!!
 		}
 		else
 		{
@@ -589,47 +652,30 @@ class PlayState extends FlxState
 
 		if (frdState == "there")
 		{
-			if (posNC == "shower" || posNC == "cam" || posNC == "none")
+			if (lighOF == true && posNC == "checkDoor")
 			{
-				reliefTimer -= 1;
+				checkForFred = true;
 			}
-			if (lighOF == false && posNC == "checkDoor" && frdState == "there")
+			else if (lighOF == false && posNC == "checkDoor")
 			{
-				#if sys
-				whoScaredU = 2;
-				FlxG.switchState(new ScareState(whoScaredU));
-				#else
-				freddyVid.play();
-				#end
+				killPlr();
 			}
 
-			if (posNC == "shower" || posNC == "cam" && frdState == "there" && reliefTimer <= 0)
+			if (posNC == "checkDoor")
 			{
-				#if sys
-				whoScaredU = 2;
-				FlxG.switchState(new ScareState(whoScaredU));
-				#else
-				freddyVid.play();
-				#end
+				//s
+			}
+			else if (checkForFred == false)
+			{
+				freddyKnockSound.play();
 			}
 
 			getRidof = 0;
 			getRidof = Random.int(1, 650);
-			if (lighOF == false && getRidof == 450)
+			if (lighOF == false && getRidof == 450 && checkForFred == true)
 			{
 				frdState = "not there";
-				checkForFred = true;
 			}
-		}
-
-		if (frdState == "there" && checkForFred == false)
-		{
-			checkForFred = true;
-			freddyKnockSound.play();
-		}
-		if (frdState == "not there" && checkForFred == true)
-		{
-			checkForFred = true;
 		}
 	}
 
@@ -671,11 +717,11 @@ class PlayState extends FlxState
 		{
 			foxyMO = 0;
 			foxyMO = Random.int(1, 600);
-
+	
 			switch foxyMO
 			{
 				case 250:
-					foxyState = 2;
+						foxyState = 2;
 				case 350:
 					foxyState = 3;
 				case 550:
@@ -727,5 +773,34 @@ class PlayState extends FlxState
 				}
 			}
 		}
+	}
+
+	function wait(milliseconds:Int, callback:Void->Void):Void
+	{
+		Timer.delay(callback, milliseconds);
+	}
+
+	public function killPlr()
+	{
+		#if sys
+		whoScaredU = 2;
+		FlxG.switchState(new ScareState(whoScaredU));
+		#else
+		freddyVid.play();
+		#end
+	}
+
+	private function switchSub() 
+	{
+		openSubState(new PixelSubState());
+	}
+
+	private function switchSub2() {
+		openSubState(new NoteSubState());
+	}
+
+	private function addPaper() 
+	{
+		add(notePaper);
 	}
 }

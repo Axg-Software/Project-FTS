@@ -11,10 +11,6 @@ class CreditState extends FlxState
 {
 	//var menuBG:FlxSprite = new FlxSprite(0, 0, AssetPaths.creditsMenu__png);
 	var backToMenu:FlxText = new FlxText(0, 632,FlxG.width, "Back to menu", 64);
-	var cursor:FlxSprite;
-
-	var cursorX:Float = FlxG.mouse.x;
-	var cursorY:Float = FlxG.mouse.y;
 
 	var camSound:FlxSound;
 
@@ -31,12 +27,6 @@ class CreditState extends FlxState
 		//Cam sound
 		camSound = FlxG.sound.load(AssetPaths.cameraOpen__ogg);
 		
-		//cursor
-		cursor = new FlxSprite(cursorX, cursorY);
-		cursor.origin.x = cursor.width / 2;
-		cursor.origin.y = cursor.height / 2;
-		cursor.makeGraphic(1, 1, FlxColor.BLACK);
-		cursor.alpha = 1;
 		FlxG.mouse.useSystemCursor = true;
 
 		//Flx Text shit
@@ -47,7 +37,6 @@ class CreditState extends FlxState
 		add(background);
 		add(backToMenu);
 		add(credits);
-		add(cursor);
 	}
 
 	override public function update(elapsed:Float)

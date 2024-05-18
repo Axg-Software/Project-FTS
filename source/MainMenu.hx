@@ -22,17 +22,14 @@ class MainMenu extends FlxState
 	var optionsButton:FlxText = new FlxText(0, 335, FlxG.width, "Options", 64);
 	var title:FlxText = new FlxText(0, 0, FlxG.width, "Project: FTS", 72);
 
-	var cursor:FlxSprite;
-
-	var cursorX:Float = FlxG.mouse.x;
-	var cursorY:Float = FlxG.mouse.y;
 	var camSound:FlxSound;
 
-	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.2", 32);
+	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.3", 32);
 
 	var musicSelect:Int = 0;
 
 	var starComplete:FlxSprite = new FlxSprite(1216, 656, AssetPaths.starComplete__png);
+	var starMiniGame:FlxSprite = new FlxSprite(1152, 656, AssetPaths.starComplete__png);
 
 	override public function create()
 	{
@@ -42,11 +39,6 @@ class MainMenu extends FlxState
 
 		camSound = FlxG.sound.load(AssetPaths.cameraOpen__ogg);
 
-		cursor = new FlxSprite(cursorX, cursorY);
-		cursor.origin.x = cursor.width / 2;
-		cursor.origin.y = cursor.height / 2;
-		cursor.makeGraphic(1, 1, FlxColor.BLACK);
-		cursor.alpha = 1;
 		FlxG.mouse.useSystemCursor = true;
 
 		versionNumber.setFormat(AssetPaths.digital_7__ttf, 29, FlxColor.WHITE, FlxTextAlign.RIGHT);
@@ -58,7 +50,6 @@ class MainMenu extends FlxState
 		add(menuBg);
 		add(startButton);
 		add(creditsButton);
-		add(cursor);
 		add(versionNumber);
 		add(optionsButton);
 		add(title);
@@ -66,20 +57,17 @@ class MainMenu extends FlxState
 
 	override public function update(elapsed:Float)
 	{
-		cursor.x = FlxG.mouse.x - cursor.width / 2;
-		cursor.y = FlxG.mouse.y - cursor.height / 2;
-
-		if (cursor.overlaps(startButton) && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(startButton) && FlxG.mouse.justPressed)
 		{
 			camSound.play();
 			FlxG.switchState(new TransitionState());
 		}
-		else if (cursor.overlaps(creditsButton) && FlxG.mouse.justPressed)
+		else if (FlxG.mouse.overlaps(creditsButton) && FlxG.mouse.justPressed)
 		{
 			camSound.play();
 			FlxG.switchState(new CreditState());
 		}
-		else if (cursor.overlaps(optionsButton) && FlxG.mouse.justPressed)
+		else if (FlxG.mouse.overlaps(optionsButton) && FlxG.mouse.justPressed)
 		{
 			camSound.play();
 			FlxG.switchState(new OptionsState());
@@ -118,10 +106,6 @@ class MainMenu extends FlxState
 				trace("SETTINGS NOT APPLIED YET");
 			}
 		}
-		else
-		{
-			trace("File does not exist.");
-		}
 
 		//Makes the star appear in the bottom right when you leave the game
 		var dir2 = 'assets\\data\\win.txt';
@@ -134,9 +118,16 @@ class MainMenu extends FlxState
 				addStar();
 			}
 		}
-		else
+		//Makes the star appear in the bottom right when you leave the game
+		var dir3 = 'assets\\data\\miniGame.txt';
+		if (FileSystem.exists(dir3))
 		{
-			trace("File does not exist.");
+			var fileContents = File.getContent(dir3);
+			
+			if (fileContents.indexOf("beatMiniGame") != -1)
+			{
+				addStar2();
+			}
 		}
 		#end
 	}
@@ -144,5 +135,10 @@ class MainMenu extends FlxState
 	function addStar() 
 	{
 		add(starComplete);
+	}
+
+	function addStar2() 
+	{
+		add(starMiniGame);
 	}
 }
