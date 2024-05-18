@@ -12,6 +12,7 @@ Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 - A pixel miniGame you can play to get another star in the menu
 - A rough framework for [Hxvlc](https://github.com/MAJigsaw77/hxvlc) to be added in later updates
 ### Changed
+- Made animatronics start moving at 1am so you have time to read the note.
 - Changed FPS to 128
 - Changed if satement to switch statement in source
 ### Fixed
