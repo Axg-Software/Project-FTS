@@ -19,6 +19,7 @@ Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 - AI for animatronics a little bit (eg, made it more easy)
 ### Removed
 - All cursor vars in the source since I didnt know you can just do FlxG.mouse 
+- Removed HaxeFlixel splashscreen when you load the game.
 
 ## V1.2 - 5-6-24
 ### Added
