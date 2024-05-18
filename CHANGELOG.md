@@ -2,11 +2,22 @@
 This is inspired by the [FNF changelog](https://github.com/FunkinCrew/Funkin/blob/main/CHANGELOG.md?plain=1)
 Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 
-## V1.3 - NULL
+## V1.3 - 5-17-24
 ### Added
+- A Changelog
+- A Compile Guide
+- Another easterEgg in the easterEgg Folder
+- A note you can click in game to show you how to play the game
+- Another option in the options menu to see the note in game
+- A pixel miniGame you can play to get another star in the menu
+- A rough framework for [Hxvlc](https://github.com/MAJigsaw77/hxvlc) to be added in later updates
 ### Changed
+- Changed FPS to 128
+- Changed if satement to switch statement in source
 ### Fixed
+- AI for animatronics a little bit (eg, made it more easy)
 ### Removed
+- All cursor vars in the source since I didnt know you can just do FlxG.mouse 
 
 ## V1.2 - 5-6-24
 ### Added
