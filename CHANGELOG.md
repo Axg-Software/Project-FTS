@@ -17,6 +17,7 @@ Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 - Changed if satement to switch statement in source
 ### Fixed
 - AI for animatronics a little bit (eg, made it more easy)
+- Fixed power glitch where you could get negative power
 ### Removed
 - All cursor vars in the source since I didnt know you can just do FlxG.mouse 
 - Removed HaxeFlixel splashscreen when you load the game.
