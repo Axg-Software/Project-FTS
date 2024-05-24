@@ -1,6 +1,13 @@
 # ChangeLog
 This is inspired by the [FNF changelog](https://github.com/FunkinCrew/Funkin/blob/main/CHANGELOG.md?plain=1)
+
 Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
+
+## V1.3.1 - 5-23-24
+### Added
+- Discord RPC!!
+### Changed
+- Organized the files for Handlers (FlxVideo, Hxvlc, Discord) 
 
 ## V1.3 - 5-17-24
 ### Added
