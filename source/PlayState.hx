@@ -1,6 +1,6 @@
 package;
 
-import video.FlxVideo;
+import handlers.video.FlxVideo;
 import pixel.PixelSubState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -145,10 +145,10 @@ class PlayState extends FlxState
 	{
 		super.create();
 
-		freddyVid = new video.FlxVideo({source: AssetPaths.frdJumpscare__mp4, autoplay: false});
-		foxyVid = new video.FlxVideo({source: AssetPaths.foxyJumpscare__mp4, autoplay: false});
-		bonnieVid = new video.FlxVideo({source: AssetPaths.bonnieJumpscare__mp4, autoplay: false});
-		cupcakeVid = new video.FlxVideo({source: AssetPaths.cupcakeJumpscare__mp4, autoplay: false});
+		freddyVid = new handlers.video.FlxVideo({source: AssetPaths.frdJumpscare__mp4, autoplay: false});
+		foxyVid = new handlers.video.FlxVideo({source: AssetPaths.foxyJumpscare__mp4, autoplay: false});
+		bonnieVid = new handlers.video.FlxVideo({source: AssetPaths.bonnieJumpscare__mp4, autoplay: false});
+		cupcakeVid = new handlers.video.FlxVideo({source: AssetPaths.cupcakeJumpscare__mp4, autoplay: false});
 
 		findCupcake.x = 325;
 		findCupcake.y = 554;

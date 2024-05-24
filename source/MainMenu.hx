@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
+import handlers.DiscordHandler;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -24,7 +25,7 @@ class MainMenu extends FlxState
 
 	var camSound:FlxSound;
 
-	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.3", 32);
+	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.3.1", 32);
 
 	var musicSelect:Int = 0;
 
@@ -34,6 +35,8 @@ class MainMenu extends FlxState
 	override public function create()
 	{
 		super.create();
+
+		DiscordHandler.init();
 
 		FlxG.camera.fade(FlxColor.BLACK, 1, true, null, false);
 
