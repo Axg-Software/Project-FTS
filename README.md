@@ -5,7 +5,7 @@ Its one of the only FNaF fan games made in that engine!
 
 # Its made by mainly:
 
-[Axuko](https://www.youtube.com/channel/UCzR4vyQFRhPb_nXeqiCqaSA) (Me :D)
+Axuko (Me :D)
 
 [SamiCLN](https://www.youtube.com/@jenfkejl)
 
