@@ -1,4 +1,4 @@
-//Lmao not using hxCodec anymore
+// lowkey hxCodec and hxvlc are hard as shit to import into this project so fuck that
 package;
 
 import flixel.FlxG;
