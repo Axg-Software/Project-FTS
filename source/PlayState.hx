@@ -16,6 +16,9 @@ import sys.io.File;
 
 class PlayState extends FlxState
 {
+	
+	// Lmao had to cut bool bro he was giving me a shitshow tryna code him
+
 	var posNC:String = "none";
 	var vent:FlxSprite = new FlxSprite(556, 42, AssetPaths.vent__png);
 	var camButton:FlxSprite = new FlxSprite(484, 636, AssetPaths.camUp__png);
@@ -178,14 +181,6 @@ class PlayState extends FlxState
 		super.update(elapsed);
 
 		timerBE -= 1;
-
-		if (timerBE <= 36000)
-		{
-			cupcakeAI();
-			freddyAI();
-			foxyAI();
-			bonnieAI();
-		}
 
 		if (regPower <= 0)
 		{
@@ -386,6 +381,14 @@ class PlayState extends FlxState
 			freddyVid.play();
 		}
 		#end
+
+		if (timerBE <= 36000)
+		{
+			cupcakeAI();
+			freddyAI();
+			foxyAI();
+			bonnieAI();
+		}
 	}
 
 	// Random Functions
@@ -400,7 +403,7 @@ class PlayState extends FlxState
 		add(vent);
 		add(camButton);
 		#if sys
-		var dir1 = 'assets\\data\\optionData2.txt';
+		var dir1 = 'assets\\data\\optionData2.axh';
 		if (FileSystem.exists(dir1))
 		{
 			var fileContents = File.getContent(dir1);
@@ -658,7 +661,7 @@ class PlayState extends FlxState
 			}
 			else if (lighOF == false && posNC == "checkDoor")
 			{
-				killPlr();
+				killPlr(freddyVid);
 			}
 
 			if (posNC == "checkDoor")
@@ -780,13 +783,13 @@ class PlayState extends FlxState
 		Timer.delay(callback, milliseconds);
 	}
 
-	public function killPlr()
+	public function killPlr(video:FlxVideo)
 	{
 		#if sys
 		whoScaredU = 2;
 		FlxG.switchState(new ScareState(whoScaredU));
 		#else
-		freddyVid.play();
+		video.play();
 		#end
 	}
 

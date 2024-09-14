@@ -18,14 +18,15 @@ class MainMenu extends FlxState
 
 	var menuBg:FlxSprite = new FlxSprite(0, 0, AssetPaths.blackStatic__png);
 
-	var startButton:FlxText = new FlxText(0, 193, FlxG.width, "New game", 64);
-	var creditsButton:FlxText = new FlxText(0, 260, FlxG.width, "Credits", 64);
+	var startButton:FlxText = new FlxText(0, 193, FlxG.width, "New game", 64);  // 75 is the difference between all of them
+	var creditsButton:FlxText = new FlxText(0, 260, FlxG.width, "Credits", 64); // THANK U PAST ETHAN ^^^^
 	var optionsButton:FlxText = new FlxText(0, 335, FlxG.width, "Options", 64);
+	var customNightButton:FlxText = new FlxText(0, 405, FlxG.width, "Custom Night");
 	var title:FlxText = new FlxText(0, 0, FlxG.width, "Project: FTS", 72);
 
 	var camSound:FlxSound;
 
-	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.3.1", 32);
+	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.4", 32);
 
 	var musicSelect:Int = 0;
 
@@ -48,6 +49,7 @@ class MainMenu extends FlxState
 		optionsButton.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);
 		startButton.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);
 		creditsButton.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);
+		customNightButton.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);
 		title.setFormat(AssetPaths.digital_7__ttf, 128, FlxColor.WHITE, FlxTextAlign.LEFT);
 
 		add(menuBg);
@@ -60,6 +62,7 @@ class MainMenu extends FlxState
 
 	override public function update(elapsed:Float)
 	{
+
 		if (FlxG.mouse.overlaps(startButton) && FlxG.mouse.justPressed)
 		{
 			camSound.play();
@@ -75,10 +78,15 @@ class MainMenu extends FlxState
 			camSound.play();
 			FlxG.switchState(new OptionsState());
 		}
+		else if (FlxG.mouse.overlaps(customNightButton) && FlxG.mouse.justPressed)
+		{
+			camSound.play();
+			FlxG.switchState(new CustomNightState());
+		}
 
 		//Options for music
 		#if sys
-		var dir = 'assets\\data\\optionsData.txt';
+		var dir = 'assets\\data\\optionsData.axh';
 		if (FileSystem.exists(dir))
 		{
 			var fileContents = File.getContent(dir);
@@ -111,7 +119,7 @@ class MainMenu extends FlxState
 		}
 
 		//Makes the star appear in the bottom right when you leave the game
-		var dir2 = 'assets\\data\\win.txt';
+		var dir2 = 'assets\\data\\win.axh';
 		if (FileSystem.exists(dir2))
 		{
 			var fileContents = File.getContent(dir2);
@@ -122,7 +130,7 @@ class MainMenu extends FlxState
 			}
 		}
 		//Makes the star appear in the bottom right when you leave the game
-		var dir3 = 'assets\\data\\miniGame.txt';
+		var dir3 = 'assets\\data\\miniGame.axh';
 		if (FileSystem.exists(dir3))
 		{
 			var fileContents = File.getContent(dir3);
@@ -132,16 +140,34 @@ class MainMenu extends FlxState
 				addStar2();
 			}
 		}
+
+		// Change text of new game button
+		var dir4 = 'assets\\data\\gameCreated.axh';
+		if (FileSystem.exists(dir4))
+		{
+			var fileContents = File.getContent(dir4);
+			
+			if (fileContents.indexOf("Game_Created") != -1)
+			{
+				changeButtonName();
+			}
+		}
 		#end
 	}
 
 	function addStar() 
 	{
 		add(starComplete);
+		add(customNightButton);
 	}
 
 	function addStar2() 
 	{
 		add(starMiniGame);
+	}
+
+	function changeButtonName() 
+	{
+		startButton.text = "Continue";
 	}
 }

@@ -86,7 +86,7 @@ class PixelSubState extends FlxSubState
             chest.animation.play("pos2", true, false, 2);
             ghostMoveF();
             #if sys
-		    var dir = 'assets\\data\\miniGame.txt';
+		    var dir = 'assets\\data\\miniGame.axh';
 		    File.write(dir, false);
 
 		    var options:haxe.ds.List<String> = new List<String>();

@@ -26,7 +26,7 @@ class WinState extends FlxState
 		super.update(elapsed);
 
 		#if sys
-		var dir = 'assets\\data\\win.txt';
+		var dir = 'assets\\data\\win.axh';
 		File.write(dir, false);
 
 		var options:haxe.ds.List<String> = new List<String>();

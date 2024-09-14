@@ -3,6 +3,16 @@ This is inspired by the [FNF changelog](https://github.com/FunkinCrew/Funkin/blo
 
 Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 
+## V1.4 - 9-13-24
+### Added
+- Custom Night
+- Added button in menu that lead you to custom night
+- When you have a pre-existing save game it will say "Continue" Instead of "New Game"
+### Changed
+- Switched all .txt files that contain data to .axh files
+- Included EyeDaleHim in the credits state in the menu 
+- Changed my name from "Deep_Fried_Bread" in credits to "Axuko"
+
 ## V1.3.1 - 5-23-24
 ### Added
 - Discord RPC!!

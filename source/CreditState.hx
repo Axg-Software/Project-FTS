@@ -9,12 +9,11 @@ import flixel.util.FlxColor;
 
 class CreditState extends FlxState
 {
-	//var menuBG:FlxSprite = new FlxSprite(0, 0, AssetPaths.creditsMenu__png);
 	var backToMenu:FlxText = new FlxText(0, 632,FlxG.width, "Back to menu", 64);
 
 	var camSound:FlxSound;
 
-	var credits:FlxText = new FlxText(0,0,FlxG.width, "Deep_Fried_Bread: Coding, Art, Ideas\nExtend: Ideas\nSamiCLN: playtesting, music\nKaanCLN: playtesting", 32);
+	var credits:FlxText = new FlxText(0,0,FlxG.width, "Axuko: Coding, Art, Ideas\nExtend: Ideas\nSamiCLN: playtesting, music\nKaanCLN: playtesting\nEyeDaleHim: Discord RPC Code", 32);
 
 	var background:FlxSprite = new FlxSprite(0,0,AssetPaths.blackStatic__png);
 

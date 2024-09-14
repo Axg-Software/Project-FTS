@@ -18,6 +18,7 @@ class ScareState extends FlxState
     var scarePNG2:FlxSprite = new FlxSprite(480, 190, AssetPaths.freddy__png);
     var scarePNG3:FlxSprite = new FlxSprite(480, 190, AssetPaths.foxy__png);
     var scarePNG4:FlxSprite = new FlxSprite(480, 190, AssetPaths.bonnie__png);
+    var scarePNG5:FlxSprite = new FlxSprite(480, 190, AssetPaths.bool__png); // TODO: change x and y
 
     var jumpscareSound:FlxSound;
 
@@ -50,7 +51,9 @@ class ScareState extends FlxState
             case 3:
                 add(scarePNG3);
             case 4:
-                add(scarePNG4);      
+                add(scarePNG4);
+            case 5:
+                add(scarePNG5);      
         }
 
         wait(4000, goToEndState);

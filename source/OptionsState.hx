@@ -133,7 +133,7 @@ class OptionsState extends FlxState
 	public static function applySettings(example:String, example2:String)
 	{
 		#if sys
-		var dir = 'assets\\data\\optionsData.txt';
+		var dir = 'assets\\data\\optionsData.axh';
 		File.write(dir, false);
 
 		var options:haxe.ds.List<String> = new List<String>();
@@ -167,7 +167,7 @@ class OptionsState extends FlxState
 		}
 
 		//Options 2
-		var dir2 = 'assets\\data\\optionData2.txt';
+		var dir2 = 'assets\\data\\optionData2.axh';
 		File.write(dir2, false);
 
 		var options2:haxe.ds.List<String> = new List<String>();
