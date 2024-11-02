@@ -26,7 +26,7 @@ class MainMenu extends FlxState
 
 	var camSound:FlxSound;
 
-	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.5", 32);
+	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.5.1", 32);
 
 	var musicSelect:Int = 0;
 

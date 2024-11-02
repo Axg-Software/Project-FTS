@@ -496,6 +496,7 @@ class PlayState extends FlxState
 		remove(cupcake);
 		remove(foxy);
 		remove(bonbon);
+		remove(noteENDN);
 		showerCurPOS = "closed";
 	}
 
