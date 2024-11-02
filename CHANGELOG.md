@@ -3,6 +3,11 @@ This is inspired by the [FNF changelog](https://github.com/FunkinCrew/Funkin/blo
 
 Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 
+## V1.5 - 11-2-24
+### Added
+- A note hidden somewhere in the game you can click and it will give you some lore
+    - (you can also see this note by just winning the game)
+
 ## V1.4 - 9-13-24
 ### Added
 - Custom Night

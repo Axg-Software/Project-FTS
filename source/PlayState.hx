@@ -41,6 +41,7 @@ class PlayState extends FlxState
 	var showerCurtainOpen:FlxSprite = new FlxSprite(240, -14, AssetPaths.showerOpen__png);
 	var leftWall:FlxSprite = new FlxSprite(-66, -14, AssetPaths.wallLeft__png);
 	var waterOF:Bool = false;
+	var noteENDN:FlxSprite = new FlxSprite(975, 598, AssetPaths.goToENDN__png);
 
 	// Light Stuff
 	var lighOF:Bool = false;
@@ -476,6 +477,13 @@ class PlayState extends FlxState
 		else
 		{
 			remove(cupcake);
+		}
+
+		add(noteENDN);
+
+		if (FlxG.mouse.overlaps(noteENDN) && FlxG.mouse.justPressed)
+		{
+			FlxG.switchState(new EndNoteState());
 		}
 	}
 

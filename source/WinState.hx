@@ -25,7 +25,7 @@ class WinState extends FlxState
 	{
 		super.update(elapsed);
 
-		#if sys
+		#if sys // idk why this isnt working on my PC ig I will just have to hope it works on everyones else's pc (or 'machines' if ur a nerd)
 		var dir = 'assets\\data\\win.axh';
 		File.write(dir, false);
 
@@ -62,7 +62,7 @@ class WinState extends FlxState
 
 		if (FlxG.keys.justPressed.R)
 		{
-			FlxG.switchState(new MainMenu());
+			FlxG.switchState(new EndNoteState());
 		}
 
 		FlxG.camera.fade(FlxColor.BLACK, 3, true, onComplete, false);
@@ -75,7 +75,7 @@ class WinState extends FlxState
 
 	function onComplete2()
 	{
-		FlxG.switchState(new MainMenu());
+		FlxG.switchState(new EndNoteState());
 	}
 
 	function wait(milliseconds:Int, callback:Void->Void):Void
