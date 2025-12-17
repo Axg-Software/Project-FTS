@@ -3,7 +3,7 @@ This is inspired by the [FNF changelog](https://github.com/FunkinCrew/Funkin/blo
 
 Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 
-## 1.6 - 12-17-25
+## V1.6 - 12-17-25
 ### Added
 - Made the buttons change color when u hover over them
 - Added a fade to all the menus to make it look a little better
