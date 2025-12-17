@@ -5,10 +5,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import haxe.Timer;
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 
 class WinState extends FlxState
 {
@@ -19,46 +15,19 @@ class WinState extends FlxState
 		super.create();
 		add(sprite);
 		FlxG.sound.playMusic(AssetPaths.bgNoise__ogg, 1, true);
+
+		FlxG.save.data.wonGame = "WonGame";
+		FlxG.save.flush();
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		#if sys // idk why this isnt working on my PC ig I will just have to hope it works on everyones else's pc (or 'machines' if ur a nerd)
-		var dir = 'assets\\data\\win.axh';
-		File.write(dir, false);
-
-		var options:haxe.ds.List<String> = new List<String>();
-		options.add("WonGame");
-
-		var output;
-
-		for (i in options)
+		if (FlxG.save.data.wonGame == "WonGame")
 		{
-			output = File.append(dir, false);
-			output.writeString(i + "\n");
-			output.close();
+			// idk if i even need this
 		}
-
-		if (FileSystem.exists(dir))
-		{
-			var fileContents = File.getContent(dir);
-
-			if (fileContents.indexOf("WonGame") != -1)
-			{
-				trace("The file contains 'Example'.");
-			}
-			else
-			{
-				trace("The file does not contain 'Example'.");
-			}
-		}
-		else
-		{
-			trace("File does not exist.");
-		}
-		#end
 
 		if (FlxG.keys.justPressed.R)
 		{

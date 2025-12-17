@@ -6,10 +6,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.sound.FlxSound;
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 
 class CustomNightState extends FlxState
 {
@@ -40,6 +36,8 @@ class CustomNightState extends FlxState
 
     var doneText:FlxText = new FlxText(0, 0, FlxG.width, "Start", 72);
 
+    var fade:FlxSprite = new FlxSprite(0, 0, AssetPaths.fade2__png);
+
     var camSound:FlxSound;
 
     override function create() 
@@ -49,6 +47,7 @@ class CustomNightState extends FlxState
         FlxG.camera.fade(FlxColor.BLACK, 1, true, null, false);
 
         add(bg);
+        add(fade);
 
         fNumText.text = Std.string(fNum);
         bNumText.text = Std.string(bNum);
@@ -180,13 +179,17 @@ class CustomNightState extends FlxState
         }
 
         // Start the game
-        if (FlxG.mouse.overlaps(doneText) && FlxG.mouse.justPressed)
+        if (FlxG.mouse.overlaps(doneText))
         {
-            FlxG.switchState(new PlayState());
+            doneText.color = FlxColor.GRAY;
+            if (FlxG.mouse.justPressed)
+            {
+                FlxG.switchState(new PlayState());
+            }
         }
-        else if (FlxG.mouse.overlaps(doneText) && FlxG.mouse.justPressed && fNum == 1 && bNum == 9 && f2Num == 8 && cNum == 7)
+        else
         {
-            FlxG.switchState(new ScareState(5));
+            doneText.color = FlxColor.WHITE;
         }
     }
 }

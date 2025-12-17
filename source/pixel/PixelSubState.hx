@@ -3,10 +3,6 @@ package pixel;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 
 class PixelSubState extends FlxSubState
 {
@@ -85,32 +81,8 @@ class PixelSubState extends FlxSubState
         {
             chest.animation.play("pos2", true, false, 2);
             ghostMoveF();
-            #if sys
-		    var dir = 'assets\\data\\miniGame.axh';
-		    File.write(dir, false);
-
-		    var options:haxe.ds.List<String> = new List<String>();
-		    options.add("beatMiniGame");
-
-		    var output;
-
-		    for (i in options)
-		    {
-		    	output = File.append(dir, false);
-		    	output.writeString(i + "\n");
-	    		output.close();
-		    }
-
-		    if (FileSystem.exists(dir))
-		    {
-		    	var fileContents = File.getContent(dir);
-
-		    	if (fileContents.indexOf("beatMiniGame") != -1)
-		    	{
-		    		trace("The file contains 'Example'.");
-		    	}
-		    }
-		    #end
+            FlxG.save.data.beatMiniGame = "beatMiniGame";
+            FlxG.save.flush();
         }
 
         if (ghostMove == true)

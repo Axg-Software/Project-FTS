@@ -41,11 +41,18 @@ class ReadEndNoteSubstate extends FlxSubState
         super.update(elapsed);
         FlxG.sound.playMusic(AssetPaths.bgNoise__ogg);
 
-        if (FlxG.mouse.overlaps(doneButton) && FlxG.mouse.justPressed)
+        if (FlxG.mouse.overlaps(doneButton))
         {
-            camSound.play();
-            System.exit(1551918);
-            // 2? ^^
+            doneButton.color = FlxColor.GRAY;
+            if (FlxG.mouse.justPressed)
+            {
+                camSound.play();
+                System.exit(1551918);
+            }
+        }
+        else
+        {
+            doneButton.color = FlxColor.WHITE;
         }
     }
 }

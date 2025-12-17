@@ -1,5 +1,6 @@
 package;
 
+import eightbit.EightbitGameState;
 import flixel.text.FlxText;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -7,16 +8,14 @@ import flixel.FlxState;
 import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
 import handlers.DiscordHandler;
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 
 class MainMenu extends FlxState
 {
 	var selected:String = "start";
 
 	var menuBg:FlxSprite = new FlxSprite(0, 0, AssetPaths.blackStatic__png);
+	var menuAnimatronics:FlxSprite = new FlxSprite(7, 556, AssetPaths.menuAnimatronics__png);
+	var fade:FlxSprite = new FlxSprite(0, 0, AssetPaths.fade2__png);
 
 	var startButton:FlxText = new FlxText(0, 193, FlxG.width, "New game", 64);  // 75 is the difference between all of them
 	var creditsButton:FlxText = new FlxText(0, 260, FlxG.width, "Credits", 64); // THANK U PAST ETHAN ^^^^
@@ -26,7 +25,7 @@ class MainMenu extends FlxState
 
 	var camSound:FlxSound;
 
-	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.5.1", 32);
+	var versionNumber:FlxText = new FlxText(0,0,FlxG.width, "v1.6", 32);
 
 	var musicSelect:Int = 0;
 
@@ -36,6 +35,30 @@ class MainMenu extends FlxState
 	override public function create()
 	{
 		super.create();
+
+		if (FlxG.save.data.musicOptionDsc == null)
+		{
+			if (FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(AssetPaths.five_times_shitting__ogg);
+			}
+		}
+
+		if (FlxG.save.data.wonGame == null)
+		{
+			FlxG.save.data.wonGame = "False";
+		}
+
+		if (FlxG.save.data.beatMiniGame == null) // remove all of the flushes and only have one at the end of these if statements __TODO__
+		{
+			FlxG.save.data.beatMiniGame = "False";
+		}
+
+		if (FlxG.save.data.gameCreated == null)
+		{
+			FlxG.save.data.gameCreated = "False";
+		}
+		FlxG.save.flush();
 
 		DiscordHandler.init();
 
@@ -53,6 +76,8 @@ class MainMenu extends FlxState
 		title.setFormat(AssetPaths.digital_7__ttf, 128, FlxColor.WHITE, FlxTextAlign.LEFT);
 
 		add(menuBg);
+		//add(menuAnimatronics);
+		add(fade);
 		add(startButton);
 		add(creditsButton);
 		add(versionNumber);
@@ -62,112 +87,106 @@ class MainMenu extends FlxState
 
 	override public function update(elapsed:Float)
 	{
-
-		if (FlxG.mouse.overlaps(startButton) && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(startButton))
 		{
-			camSound.play();
-			FlxG.switchState(new TransitionState());
-		}
-		else if (FlxG.mouse.overlaps(creditsButton) && FlxG.mouse.justPressed)
-		{
-			camSound.play();
-			FlxG.switchState(new CreditState());
-		}
-		else if (FlxG.mouse.overlaps(optionsButton) && FlxG.mouse.justPressed)
-		{
-			camSound.play();
-			FlxG.switchState(new OptionsState());
-		}
-		else if (FlxG.mouse.overlaps(customNightButton) && FlxG.mouse.justPressed)
-		{
-			camSound.play();
-			FlxG.switchState(new CustomNightState());
-		}
-
-		//Options for music
-		#if sys
-		var dir = 'assets\\data\\optionsData.axh';
-		if (FileSystem.exists(dir))
-		{
-			var fileContents = File.getContent(dir);
-	
-			if (fileContents.indexOf("Music 1") != -1)
+			startButton.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
 			{
-				if (FlxG.sound.music == null)
-				{
-					FlxG.sound.playMusic(AssetPaths.five_times_shitting__ogg);
-				}
-			}
-			else if (fileContents.indexOf("Music 2") != -1)
-			{
-				if (FlxG.sound.music == null)
-				{
-					FlxG.sound.playMusic(AssetPaths.five_times_shitting2__ogg);
-				}
-			}
-			else if (fileContents.indexOf("Static") != -1)
-			{
-				if (FlxG.sound.music == null)
-				{
-					FlxG.sound.playMusic(AssetPaths.bgNoise__ogg);
-				}
-			}
-			else
-			{
-				trace("SETTINGS NOT APPLIED YET");
+				camSound.play();
+				FlxG.switchState(new TransitionState());
 			}
 		}
-
-		//Makes the star appear in the bottom right when you leave the game
-		var dir2 = 'assets\\data\\win.axh';
-		if (FileSystem.exists(dir2))
+		else
 		{
-			var fileContents = File.getContent(dir2);
-	
-			if (fileContents.indexOf("WonGame") != -1)
-			{
-				addStar();
-			}
-		}
-		//Makes the star appear in the bottom right when you leave the game
-		var dir3 = 'assets\\data\\miniGame.axh';
-		if (FileSystem.exists(dir3))
-		{
-			var fileContents = File.getContent(dir3);
-			
-			if (fileContents.indexOf("beatMiniGame") != -1)
-			{
-				addStar2();
-			}
+			startButton.color = FlxColor.WHITE;
 		}
 
-		// Change text of new game button
-		var dir4 = 'assets\\data\\gameCreated.axh';
-		if (FileSystem.exists(dir4))
+		if (FlxG.mouse.overlaps(creditsButton))
 		{
-			var fileContents = File.getContent(dir4);
-			
-			if (fileContents.indexOf("Game_Created") != -1)
+			creditsButton.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
 			{
-				changeButtonName();
+				camSound.play();
+				FlxG.switchState(new CreditState());
 			}
 		}
-		#end
-	}
+		else
+		{
+			creditsButton.color = FlxColor.WHITE;
+		}
 
-	function addStar() 
-	{
-		add(starComplete);
-		add(customNightButton);
-	}
+		if (FlxG.mouse.overlaps(optionsButton))
+		{
+			optionsButton.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
+			{
+				camSound.play();
+				FlxG.switchState(new OptionsState());
+			}
+		}
+		else
+		{
+			optionsButton.color = FlxColor.WHITE;
+		}
 
-	function addStar2() 
-	{
-		add(starMiniGame);
-	}
+		if (FlxG.mouse.overlaps(customNightButton) && FlxG.save.data.wonGame == "WonGame")
+		{
+			customNightButton.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
+			{
+				camSound.play();
+				FlxG.switchState(new CustomNightState());
+			}
+		}
+		else
+		{
+			customNightButton.color = FlxColor.WHITE;
+		}
 
-	function changeButtonName() 
-	{
-		startButton.text = "Continue";
+		// -------------------------------------------------------------------------
+
+		if (FlxG.save.data.musicOptionDsc == "Music 1")
+		{
+			if (FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(AssetPaths.five_times_shitting__ogg);
+			}
+		}
+		else if (FlxG.save.data.musicOptionDsc == "Music 2")
+		{
+			if (FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(AssetPaths.five_times_shitting2__ogg);
+			}
+		}
+		else if (FlxG.save.data.musicOptionDsc == "Static")
+		{
+			if (FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(AssetPaths.bgNoise__ogg);
+			}
+		}
+
+		// -------------------------------------------------------------------------
+
+		if (FlxG.save.data.wonGame == "WonGame")
+		{
+			add(starComplete);
+			add(customNightButton);
+		}
+
+		// -------------------------------------------------------------------------
+
+		if (FlxG.save.data.beatMiniGame == "beatMiniGame")
+		{
+			add(starMiniGame);
+		}
+
+		// -------------------------------------------------------------------------
+
+		if (FlxG.save.data.gameCreated == "Game_Created")
+		{
+			startButton.text = "Continue";
+		}
 	}
 }

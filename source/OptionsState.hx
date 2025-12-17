@@ -6,10 +6,6 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import haxe.Timer;
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 
 class OptionsState extends FlxState
 {
@@ -23,11 +19,12 @@ class OptionsState extends FlxState
 
 	var backToMenu:FlxText = new FlxText(0, 632, FlxG.width, "Back to menu", 64);
 	var applyButton:FlxText = new FlxText(0, 504, FlxG.width, "Apply", 64);
-    var restartGame:FlxText = new FlxText(300, 504, FlxG.width, "Restart game to see changes", 64);
 
     var bg:FlxSprite = new FlxSprite(0,0,AssetPaths.blackStatic__png);
 
 	var pageNMB:Int = 0;
+
+	var fade:FlxSprite = new FlxSprite(0, 0, AssetPaths.fade2__png);
 
 	override function create()
 	{
@@ -36,31 +33,50 @@ class OptionsState extends FlxState
 		FlxG.camera.fade(FlxColor.BLACK, 1, true, null, false);
 
         add(bg);
+		add(fade);
 
 		musicOption.setFormat(AssetPaths.digital_7__ttf, 72, FlxColor.WHITE, FlxTextAlign.LEFT);
 		musicOptionDsc.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);
 		add(musicOption);
 		add(musicOptionDsc);
 
+		if (FlxG.save.data.musicOptionDsc == null)
+		{
+			FlxG.save.data.musicOptionDsc = "Music 1";
+			FlxG.save.flush();
+		}
+
 		noteOption.setFormat(AssetPaths.digital_7__ttf, 72, FlxColor.WHITE, FlxTextAlign.LEFT);
 		noteOptionDsc.setFormat(AssetPaths.digital_7__ttf, 64, FlxColor.WHITE, FlxTextAlign.LEFT);
 		add(noteOption);
 		add(noteOptionDsc);
 
+		if (FlxG.save.data.noteOptionDsc == null)
+		{
+			FlxG.save.data.musicOptionDsc = "True";
+			FlxG.save.flush();
+		}
+
 		backToMenu.setFormat(AssetPaths.digital_7__ttf, 72, FlxColor.WHITE, FlxTextAlign.LEFT);
 		applyButton.setFormat(AssetPaths.digital_7__ttf, 72, FlxColor.WHITE, FlxTextAlign.LEFT);
 		add(backToMenu);
 		add(applyButton);
-
-        restartGame.setFormat(AssetPaths.digital_7__ttf, 32, FlxColor.WHITE, FlxTextAlign.LEFT);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (FlxG.mouse.overlaps(backToMenu) && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(backToMenu))
 		{
-			FlxG.switchState(new MainMenu());
+			backToMenu.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
+			{
+				FlxG.switchState(new MainMenu());
+			}
+		}
+		else
+		{
+			backToMenu.color = FlxColor.WHITE;
 		}
 
 		if (pageNMB == 0)
@@ -69,9 +85,17 @@ class OptionsState extends FlxState
 			remove(noteOptionDsc);
 			add(musicOption);
 			add(musicOptionDsc);
-			if (FlxG.mouse.overlaps(musicOptionDsc) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(musicOptionDsc))
 			{
-				musicOptionDscSLC = musicOptionDscSLC + 1;
+				musicOptionDsc.color = FlxColor.GRAY;
+				if (FlxG.mouse.justPressed)
+				{
+					musicOptionDscSLC = musicOptionDscSLC + 1;
+				}
+			}
+			else
+			{
+				musicOptionDsc.color = FlxColor.WHITE;
 			}
 		}
 		else if (pageNMB == 1)
@@ -80,9 +104,17 @@ class OptionsState extends FlxState
 			add(noteOptionDsc);
 			remove(musicOption);
 			remove(musicOptionDsc);
-			if (FlxG.mouse.overlaps(noteOptionDsc) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(noteOptionDsc))
 			{
-				noteOptionDscSLC = noteOptionDscSLC + 1;
+				noteOptionDsc.color = FlxColor.GRAY;
+				if (FlxG.mouse.justPressed)
+				{
+					noteOptionDscSLC = noteOptionDscSLC + 1;
+				}
+			}
+			else
+			{
+				noteOptionDsc.color = FlxColor.WHITE;
 			}
 		}
 
@@ -95,11 +127,17 @@ class OptionsState extends FlxState
 			pageNMB = 0;
 		}
 
-		if (FlxG.mouse.overlaps(applyButton) && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(applyButton))
 		{
-            add(restartGame);
-            wait(1000, removeRestart);
-			applySettings(musicOptionDsc.text, noteOptionDsc.text);
+			applyButton.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
+			{
+				applySettings(musicOptionDsc.text, noteOptionDsc.text);
+			}
+		}
+		else
+		{
+			applyButton.color = FlxColor.WHITE;
 		}
 
 		switch musicOptionDscSLC
@@ -132,83 +170,13 @@ class OptionsState extends FlxState
 
 	public static function applySettings(example:String, example2:String)
 	{
-		#if sys
-		var dir = 'assets\\data\\optionsData.axh';
-		File.write(dir, false);
-
-		var options:haxe.ds.List<String> = new List<String>();
-		options.add(example);
-
-		var output;
-
-		for (i in options)
-		{
-			output = File.append(dir, false);
-			output.writeString(i + "\n");
-			output.close();
-		}
-
-		if (FileSystem.exists(dir))
-		{
-			var fileContents = File.getContent(dir);
-
-			if (fileContents.indexOf("Music 1") != -1 || fileContents.indexOf("Music 2") != -1 || fileContents.indexOf("Static") != -1)
-			{
-				trace("The file contains 'Example'.");
-			}
-			else
-			{
-				trace("The file does not contain 'Example'.");
-			}
-		}
-		else
-		{
-			trace("File does not exist.");
-		}
-
-		//Options 2
-		var dir2 = 'assets\\data\\optionData2.axh';
-		File.write(dir2, false);
-
-		var options2:haxe.ds.List<String> = new List<String>();
-		options2.add(example2);
-
-		var output2;
-
-		for (i in options2)
-		{
-			output2 = File.append(dir2, false);
-			output2.writeString(i + "\n");
-			output2.close();
-		}
-
-		if (FileSystem.exists(dir2))
-		{
-			var fileContents2 = File.getContent(dir2);
-
-			if (fileContents2.indexOf("True") != -1 || fileContents2.indexOf("False") != -1)
-			{
-				trace("The file contains 'Example'.");
-			}
-			else
-			{
-				trace("The file does not contain 'Example'.");
-			}
-		}
-		else
-		{
-			trace("File does not exist.");
-		}
-		#end
+		FlxG.save.data.musicOptionDsc = example;
+		FlxG.save.data.noteOptionDsc = example2;
+		FlxG.save.flush();
 	}
 
     function wait(milliseconds:Int, callback:Void->Void):Void
     {
         Timer.delay(callback, milliseconds);
-    }
-
-    function removeRestart() 
-    {
-        remove(restartGame);
     }
 }

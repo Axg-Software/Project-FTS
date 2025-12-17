@@ -123,6 +123,7 @@ class PlayState extends FlxState
 
 	var waterDown2SEC:Int = 1;
 	var regDown2SEC:Int = 1;
+	// lmao didnt use half of these vars
 
 	var timeTarger:Int = 2;
 
@@ -282,21 +283,24 @@ class PlayState extends FlxState
 			removeRight();
 			removeCam();
 			waterOF = false;
-			if (FlxG.mouse.overlaps(lightSwitchSPRTOP) && FlxG.mouse.justPressed)
+			if (FlxG.mouse.overlaps(lightSwitchSPRTOP) && FlxG.mouse.justPressed && lighOF == false)
 			{
 				lighOF = true;
 				regPower -= 1;
 				camSound.play();
 			}
-			else if (FlxG.mouse.overlaps(lighSwitchSPRDOWN) && FlxG.mouse.justPressed)
+			else if (FlxG.mouse.overlaps(lighSwitchSPRDOWN) && FlxG.mouse.justPressed && lighOF == true)
 			{
 				lighOF = false;
 				camSound.play();
 			}
 
-			if (FlxG.mouse.overlaps(notePaper) && FlxG.mouse.justPressed)
+			if (FlxG.save.data.noteOptionDsc == "True")
 			{
-				switchSub2();
+				if (FlxG.mouse.overlaps(notePaper) && FlxG.mouse.justPressed)
+				{
+					openSubState(new NoteSubState());
+				}	
 			}
 		}
 
@@ -403,18 +407,19 @@ class PlayState extends FlxState
 		add(lighSwitchSPRDOWN);
 		add(vent);
 		add(camButton);
-		#if sys
-		var dir1 = 'assets\\data\\optionData2.axh';
-		if (FileSystem.exists(dir1))
+
+		if (FlxG.save.data.noteOptionDsc == "True")
 		{
-			var fileContents = File.getContent(dir1);
-			
-			if (fileContents.indexOf("True") != -1)
-			{
-				addPaper();
-			}
+			add(notePaper);
 		}
-		#end
+		else if (FlxG.save.data.noteOptionDsc == "False")
+		{
+			remove(notePaper);
+		}
+		else if (FlxG.save.data.noteOptionDsc == null)
+		{
+			remove(notePaper);
+		}
 	}
 
 	function removeNONE()
@@ -715,7 +720,7 @@ class PlayState extends FlxState
 		if (posNC == "shower" && showerCurPOS == "open")
 		{
 			getRidofFOX1 = 0;
-			getRidofFOX1 = Random.int(1, 400);
+			getRidofFOX1 = Random.int(1, 500);
 
 			switch getRidofFOX1
 			{
@@ -728,7 +733,7 @@ class PlayState extends FlxState
 		else if (showerCurPOS == "closed" && posNC == "cam" || posNC == "none" || posNC == "checkDoor")
 		{
 			foxyMO = 0;
-			foxyMO = Random.int(1, 600);
+			foxyMO = Random.int(1, 700);
 	
 			switch foxyMO
 			{
@@ -787,7 +792,7 @@ class PlayState extends FlxState
 		}
 	}
 
-	function wait(milliseconds:Int, callback:Void->Void):Void
+	function wait(milliseconds:Int, callback:Void->Void)
 	{
 		Timer.delay(callback, milliseconds);
 	}
@@ -806,13 +811,6 @@ class PlayState extends FlxState
 	{
 		openSubState(new PixelSubState());
 	}
-
-	private function switchSub2() {
-		openSubState(new NoteSubState());
-	}
-
-	private function addPaper() 
-	{
-		add(notePaper);
-	}
 }
+
+// Finally ending this game OFFICALLY after 3 years

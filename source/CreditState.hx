@@ -13,9 +13,11 @@ class CreditState extends FlxState
 
 	var camSound:FlxSound;
 
-	var credits:FlxText = new FlxText(0,0,FlxG.width, "Axuko: Coding, Art, Ideas\nExtend: Ideas\nSamiCLN: playtesting, music\nKaanCLN: playtesting\nEyeDaleHim: Discord RPC Code", 32);
+	var credits:FlxText = new FlxText(0,0,FlxG.width, "Axuko: Coding, Art, Ideas\nPebble: Ideas\nJenfkejl: playtesting, music\nKaanCLN: playtesting\nEyeDaleHim: Discord RPC Code", 32);
 
 	var background:FlxSprite = new FlxSprite(0,0,AssetPaths.blackStatic__png);
+
+	var fade:FlxSprite = new FlxSprite(0, 0, AssetPaths.fade2__png);
 
 	override public function create()
 	{
@@ -34,6 +36,7 @@ class CreditState extends FlxState
 
 		//add(menuBG);
 		add(background);
+		add(fade);
 		add(backToMenu);
 		add(credits);
 	}
@@ -41,10 +44,18 @@ class CreditState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (FlxG.mouse.overlaps(backToMenu) && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(backToMenu))
 		{
-			camSound.play();
-			FlxG.switchState(new MainMenu());
+			backToMenu.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
+			{
+				camSound.play();
+				FlxG.switchState(new MainMenu());
+			}
+		}
+		else
+		{
+			backToMenu.color = FlxColor.WHITE;
 		}
 	}
 }

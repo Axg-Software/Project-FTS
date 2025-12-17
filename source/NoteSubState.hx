@@ -21,7 +21,6 @@ class NoteSubState extends FlxSubState
     Also another way you could get rid of him is to press the 'Reset Freddy Position' button in the cameras but that takes away 5 power.\n
     So you are now all caught up on how not to have the ki-, 'Animatronics' to not get into your bathroom!\n
     Umm Bye!");
-    var back:FlxText = new FlxText(0, 650, FlxG.width, "--->", 32);
 
     public function new()
     {
@@ -33,23 +32,21 @@ class NoteSubState extends FlxSubState
         super.create();
         text.setFormat(AssetPaths.digital_7__ttf, 32, FlxColor.BLACK, FlxTextAlign.CENTER);
         text2.setFormat(AssetPaths.digital_7__ttf, 32, FlxColor.BLACK, FlxTextAlign.CENTER);
-        back.setFormat(AssetPaths.digital_7__ttf, 32, FlxColor.BLACK, FlxTextAlign.RIGHT);
-        add(back);
     }
 
     override function update(elapsed:Float) 
     {
         super.update(elapsed);
-        if (FlxG.mouse.overlaps(back) && FlxG.mouse.justPressed)
+        if (FlxG.mouse.justPressed || FlxG.keys.justPressed.BACKSPACE)
         {
             close();
         }
 
-        if (FlxG.mouse.justPressed)
+        if (FlxG.keys.justPressed.D || FlxG.keys.justPressed.RIGHT)
         {
             textPart = textPart + 1;
         }
-        else if (FlxG.mouse.justPressedRight)
+        else if (FlxG.keys.justPressed.A || FlxG.keys.justPressed.LEFT)
         {
             textPart = textPart - 1;
         }

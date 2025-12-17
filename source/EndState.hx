@@ -28,9 +28,17 @@ class EndState extends FlxState
 			FlxG.camera.fade(FlxColor.BLACK, 4, true, onComplete, false);
 		}
 
-		if (FlxG.mouse.overlaps(retryButton) && FlxG.mouse.justPressed)
+		if (FlxG.mouse.overlaps(retryButton))
 		{
-			FlxG.switchState(new MainMenu());
+			retryButton.color = FlxColor.GRAY;
+			if (FlxG.mouse.justPressed)
+			{
+				FlxG.switchState(new MainMenu());
+			}
+		}
+		else
+		{
+			retryButton.color = FlxColor.WHITE;
 		}
 	}
 

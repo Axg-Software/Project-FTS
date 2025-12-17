@@ -7,9 +7,9 @@ Its one of the only FNaF fan games made in that engine!
 
 [Axuko](https://youtube.com/@axuko?si=5_qJGwWDkjOYZ4cG) (Me :D)
 
-[SamiCLN](https://www.youtube.com/@jenfkejl)
+[Jenfkejl](https://www.youtube.com/@jenfkejl)
 
-[ExtendX](https://www.youtube.com/@extendfr)
+[Pebble](https://www.youtube.com/@extendfr)
 
 # With Contributors being:
 
