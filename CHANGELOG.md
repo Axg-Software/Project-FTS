@@ -18,7 +18,6 @@ Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 - Changed SamiCLN credits to Jenfkejl
 - Changed ExtendX credits to Pebble
 - Instead of pressing a arrow in the Note state you just press A, D, or Left and Right arrow keys (so now to leave it just press the mouse button anywhere)
-- Changed the way the paper note looks to match the overall style of the game a little more
 ### Fixed
 - If the power is already on and you press the green button again the power will not go down
 - Being able to click on the custom night button without it actually being there
@@ -110,3 +109,4 @@ Written by [Axuko](https://github.com/Ethan-makes-music?tab=repositories)
 ## V1.0 - 12-17-23
 ### Added
 - The first release of the game!
+
